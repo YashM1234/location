@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Define project directory property -->
+    <property name="LOGS_DIR" value="./logs" />
+
+    <!-- Define appends -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{36} - %msg%n</pattern> <!-- Define log message format -->
+        </encoder>
+    </appender>
+
+    <!-- Define rolling file appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_DIR}/app.log</file> <!-- Log file will be saved in the project directory under logs folder -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_DIR}/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern> <!-- Rolling file pattern -->
+            <maxFileSize>10MB</maxFileSize> <!-- Maximum size of each log file -->
+            <maxHistory>30</maxHistory> <!-- Maximum number of archived log files -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{36} - %msg%n</pattern> <!-- Define log message format -->
+        </encoder>
+    </appender>
+
+    <!-- Define loggers for different profiles -->
+    <!-- Development profile -->
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/> <!-- Print logs to terminal -->
+        </root>
+    </springProfile>
+
+    <!-- Local profile -->
+    <springProfile name="local">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/> <!-- Print logs to terminal -->
+        </root>
+    </springProfile>
+
+    <!-- Production profile -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="FILE"/> <!-- Save logs to file -->
+        </root>
+    </springProfile>
+
+    <!-- Acceptance profile -->
+    <springProfile name="acc">
+        <root level="INFO">
+            <appender-ref ref="FILE"/> <!-- Save logs to file -->
+        </root>
+    </springProfile>
+
+    <!-- Test profile -->
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="FILE"/> <!-- Save logs to file -->
+        </root>
+    </springProfile>
+
+</configuration>
+
